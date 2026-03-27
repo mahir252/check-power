@@ -1,7 +1,7 @@
 function login(){
    
   const username="mahir";
-  const userpass="m@#.com";
+  const userpass="marjuk";
 
   const value1=document.getElementById("name").value;
   const value2=document.getElementById("password").value;

@@ -1,4 +1,4 @@
-  alert("Eid Mubarak");
+//  alert("Eid Mubarak");
   
   const bb=document.getElementById("outputBox");
   

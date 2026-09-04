@@ -2,101 +2,1117 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>⚡ Device Power Monitor · Phone · Laptop · Desktop</title>
     <style>
+        /* ─── reset & dark premium glass ─── */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
         }
 
         body {
-            height: 100vh;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            min-height: 100vh;
+            background: radial-gradient(circle at 20% 30%, #0f1422, #05070c);
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+            padding: 16px;
+            touch-action: manipulation;
         }
 
-        .login-box {
-            width: 350px;
-            padding: 40px;
-            background: #111;
-            border-radius: 12px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        .dashboard {
+            width: 100%;
+            max-width: 520px;
+            background: rgba(12, 16, 28, 0.65);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 56px;
+            padding: 28px 20px 32px;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.04) inset, 0 0 60px rgba(0, 200, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            max-height: 95vh;
+            overflow-y: auto;
         }
 
-        .login-box h2 {
-            color: #fff;
-            text-align: center;
-            margin-bottom: 30px;
-            font-weight: 600;
-            letter-spacing: 1px;
+        .dashboard::-webkit-scrollbar {
+            width: 3px;
+        }
+        .dashboard::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+        }
+        .dashboard::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
         }
 
-        .input-group {
+        /* ─── header ─── */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
         }
 
-        .input-group input {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            outline: none;
-            border-radius: 6px;
-            background: #222;
-            color: #fff;
-            font-size: 14px;
-            transition: 0.3s;
-        }
-
-        .input-group input::placeholder {
-            color: #888;
-        }
-
-        .input-group input:focus {
-            background: #1c1c1c;
-            box-shadow: 0 0 0 1px #00c6ff;
-        }
-
-        .login-btn {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 6px;
-            background: linear-gradient(135deg, #00c6ff, #0072ff);
-            color: #fff;
-            font-size: 15px;
+        .header h1 {
+            font-size: 1.3rem;
             font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
+            letter-spacing: -0.3px;
+            color: rgba(255, 255, 255, 0.85);
+            text-shadow: 0 2px 12px rgba(0, 180, 255, 0.12);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .login-btn:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
+        .header h1 span {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 2px 12px;
+            border-radius: 40px;
+            font-size: 0.6rem;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        .live-badge {
+            background: rgba(0, 220, 130, 0.08);
+            padding: 5px 14px;
+            border-radius: 60px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: #6effb0;
+            border: 1px solid rgba(0, 220, 130, 0.06);
+            box-shadow: 0 0 20px rgba(0, 220, 130, 0.02);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            letter-spacing: 0.3px;
+        }
+
+        .live-badge::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #6effb0;
+            border-radius: 50%;
+            box-shadow: 0 0 14px #6effb0;
+            animation: pulse-dot 1.8s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0% {
+                opacity: 0.2;
+                transform: scale(0.8);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+            100% {
+                opacity: 0.2;
+                transform: scale(0.8);
+            }
+        }
+
+        /* ─── device type badge ─── */
+        .device-badge {
+            display: inline-block;
+            padding: 4px 16px;
+            border-radius: 40px;
+            font-size: 0.65rem;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            color: rgba(255, 255, 255, 0.3);
+            margin-bottom: 16px;
+        }
+
+        .device-badge .highlight {
+            color: #6fcbff;
+            font-weight: 600;
+        }
+
+        /* ─── charger section ─── */
+        .charger-section {
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.2);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            padding-left: 4px;
+        }
+
+        .power-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .power-item {
+            background: rgba(255, 255, 255, 0.015);
+            border-radius: 20px;
+            padding: 12px 16px 14px;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(2px);
+            transition: all 0.2s ease;
+        }
+
+        .power-item:hover {
+            background: rgba(255, 255, 255, 0.025);
+            border-color: rgba(255, 255, 255, 0.04);
+        }
+
+        .power-item .label-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2px;
+        }
+
+        .power-item .label-row .icon {
+            font-size: 1.1rem;
+            line-height: 1;
+            margin-right: 8px;
+            filter: drop-shadow(0 0 8px rgba(0, 180, 255, 0.08));
+        }
+
+        .power-item .label-row .name {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 0.2px;
+        }
+
+        .power-item .value-big {
+            font-size: 2rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+            margin-top: 2px;
+        }
+
+        .power-item .value-big .unit {
+            font-size: 0.85rem;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.2);
+            margin-left: 2px;
+        }
+
+        .power-item .sub-info {
+            display: flex;
+            justify-content: flex-start;
+            gap: 12px;
+            margin-top: 6px;
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.12);
+            border-top: 1px solid rgba(255, 255, 255, 0.01);
+            padding-top: 6px;
+        }
+
+        .power-item .sub-info span {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 2px 10px;
+            border-radius: 40px;
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .power-item.voltage .value-big {
+            color: #6fcbff;
+        }
+        .power-item.current .value-big {
+            color: #f9a8d4;
+        }
+        .power-item.power .value-big {
+            color: #fcd34d;
+        }
+
+        .power-item.zero-state .value-big {
+            color: rgba(255, 255, 255, 0.08);
+        }
+        .power-item.zero-state .unit {
+            color: rgba(255, 255, 255, 0.04);
+        }
+        .power-item.zero-state .sub-info span {
+            color: rgba(255, 255, 255, 0.04);
+        }
+
+        /* ─── gauge ring ─── */
+        .gauge-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .gauge-ring {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 30px rgba(250, 200, 50, 0.06);
+            flex-shrink: 0;
+            margin-left: 6px;
+            position: relative;
+            background: conic-gradient(from -90deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.02) 100%);
+        }
+
+        .gauge-ring .inner {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(12, 16, 28, 0.85);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.25);
+        }
+
+        /* ─── status badge ─── */
+        .charge-status {
+            display: inline-block;
+            padding: 3px 12px;
+            border-radius: 40px;
+            font-size: 0.6rem;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            color: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .charge-status.charging {
+            color: #6effb0;
+            border-color: rgba(0, 220, 130, 0.15);
+            background: rgba(0, 220, 130, 0.04);
+            box-shadow: 0 0 20px rgba(0, 220, 130, 0.03);
+        }
+
+        .charge-status.not-charging {
+            color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.01);
+        }
+
+        /* ─── charging speed indicator ─── */
+        .charging-speed {
+            margin-top: 10px;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.015);
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            text-align: center;
+        }
+
+        .charging-speed .speed-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .charging-speed .speed-icon {
+            font-size: 1.8rem;
+            line-height: 1;
+        }
+
+        .charging-speed .speed-label {
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .charging-speed .speed-label.fast {
+            color: #6effb0;
+            text-shadow: 0 0 30px rgba(0, 220, 130, 0.2);
+        }
+
+        .charging-speed .speed-label.medium {
+            color: #fcd34d;
+            text-shadow: 0 0 30px rgba(250, 200, 50, 0.2);
+        }
+
+        .charging-speed .speed-label.slow {
+            color: #f9a8d4;
+            text-shadow: 0 0 30px rgba(250, 168, 212, 0.2);
+        }
+
+        .charging-speed .speed-label.idle {
+            color: rgba(255, 255, 255, 0.1);
+        }
+
+        .charging-speed .speed-percent {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.8);
+            letter-spacing: -1px;
+        }
+
+        .charging-speed .speed-percent .pct-symbol {
+            font-size: 1rem;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .charging-speed .speed-bar-track {
+            width: 100%;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 6px;
+        }
+
+        .charging-speed .speed-bar-track .speed-bar-fill {
+            height: 100%;
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .charging-speed .speed-bar-track .speed-bar-fill.fast-fill {
+            background: linear-gradient(90deg, #6effb0, #00d084);
+            box-shadow: 0 0 20px rgba(0, 220, 130, 0.2);
+        }
+
+        .charging-speed .speed-bar-track .speed-bar-fill.medium-fill {
+            background: linear-gradient(90deg, #fcd34d, #f59e0b);
+            box-shadow: 0 0 20px rgba(250, 200, 50, 0.2);
+        }
+
+        .charging-speed .speed-bar-track .speed-bar-fill.slow-fill {
+            background: linear-gradient(90deg, #f9a8d4, #ec4899);
+            box-shadow: 0 0 20px rgba(250, 168, 212, 0.2);
+        }
+
+        .charging-speed .speed-bar-track .speed-bar-fill.idle-fill {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .charging-speed .speed-sub {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 4px;
+            font-size: 0.55rem;
+            color: rgba(255, 255, 255, 0.1);
+            width: 100%;
+        }
+
+        /* ─── battery output section ─── */
+        .battery-output-section {
+            margin-top: 16px;
+        }
+
+        .battery-output-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .battery-item {
+            background: rgba(255, 255, 255, 0.015);
+            border-radius: 18px;
+            padding: 10px 14px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+        }
+
+        .battery-item:hover {
+            background: rgba(255, 255, 255, 0.025);
+            border-color: rgba(255, 255, 255, 0.04);
+        }
+
+        .battery-item .comp-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .battery-item .comp-icon {
+            font-size: 1rem;
+            line-height: 1;
+            width: 24px;
+            text-align: center;
+            filter: drop-shadow(0 0 8px rgba(0, 180, 255, 0.05));
+        }
+
+        .battery-item .comp-name {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.5);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .battery-item .comp-values {
+            display: flex;
+            gap: 8px;
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.2);
+            flex-shrink: 0;
+        }
+
+        .battery-item .comp-values span {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 2px 8px;
+            border-radius: 20px;
+            color: rgba(255, 255, 255, 0.25);
+            font-weight: 400;
+        }
+
+        .battery-item .comp-values .v {
+            color: #6fcbff;
+        }
+        .battery-item .comp-values .a {
+            color: #f9a8d4;
+        }
+        .battery-item .comp-values .w {
+            color: #fcd34d;
+        }
+
+        .battery-item .comp-bar {
+            width: 50px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-left: 6px;
+            flex-shrink: 0;
+        }
+
+        .battery-item .comp-bar .fill {
+            height: 100%;
+            border-radius: 10px;
+            width: 0%;
+            background: linear-gradient(90deg, #fcd34d, #f59e0b);
+            transition: width 0.4s ease;
+        }
+
+        .battery-item.zero-state {
+            opacity: 0.2;
+        }
+
+        /* ─── responsive ─── */
+        @media (max-width: 400px) {
+            .dashboard {
+                padding: 16px 12px 20px;
+                border-radius: 40px;
+            }
+            .header h1 {
+                font-size: 1rem;
+            }
+            .power-item {
+                padding: 10px 12px 12px;
+            }
+            .power-item .value-big {
+                font-size: 1.6rem;
+            }
+            .gauge-ring {
+                width: 45px;
+                height: 45px;
+            }
+            .gauge-ring .inner {
+                width: 34px;
+                height: 34px;
+                font-size: 0.5rem;
+            }
+            .battery-item {
+                padding: 8px 10px 10px;
+                flex-wrap: wrap;
+                gap: 4px;
+            }
+            .battery-item .comp-values {
+                gap: 4px;
+                flex-wrap: wrap;
+            }
+            .charging-speed .speed-percent {
+                font-size: 1.8rem;
+            }
+            .charging-speed .speed-label {
+                font-size: 0.85rem;
+            }
+        }
+
+        .total-power-row {
+            margin-top: 8px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .total-power-row span {
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .total-power-row .total-w {
+            color: #fcd34d;
         }
     </style>
 </head>
 <body>
 
-    <div class="login-box">
-        <h2>Login</h2>
-
-        <div class="input-group">
-            <input type="text" id="name" placeholder="Name">
+    <div class="dashboard">
+        <div class="header">
+            <h1>
+                ⚡ Power
+                <span>live</span>
+            </h1>
+            <div class="live-badge">1s</div>
         </div>
 
-        <div class="input-group">
-            <input type="password" id="password" placeholder="Password">
+        <!-- DEVICE TYPE BADGE -->
+        <div class="device-badge" id="deviceBadge">
+            📱 Device: <span class="highlight" id="deviceType">Detecting...</span>
         </div>
 
-        <button class="login-btn" onclick="login()">Sign In</button>
-        <br><br>
-        <button class="login-btn" onclick="(alert('ONLY ADMIN CAN CHANGE THE PASSWORD FOR NOW'))">CHANGE PASSWORD</button>
+        <!-- CHARGER SECTION -->
+        <div class="charger-section" id="chargerSection">
+            <div class="section-title" id="chargerTitle">🔌 Charger Input</div>
+            <div class="power-grid">
+                <!-- VOLTAGE -->
+                <div class="power-item voltage" id="voltageItem">
+                    <div class="label-row">
+                        <span><span class="icon">🔌</span><span class="name">Voltage</span></span>
+                        <span class="charge-status" id="chargeStatus">⏳ waiting...</span>
+                    </div>
+                    <div class="value-big">
+                        <span id="voltageValue">0.00</span><span class="unit">V</span>
+                    </div>
+                    <div class="sub-info">
+                        <span id="voltageDetail">input</span>
+                        <span id="batteryLevelDisplay">🔋 --%</span>
+                    </div>
+                </div>
+
+                <!-- CURRENT -->
+                <div class="power-item current" id="currentItem">
+                    <div class="label-row">
+                        <span><span class="icon">⚡</span><span class="name">Current</span></span>
+                        <span style="font-size:0.55rem; color:rgba(255,255,255,0.1);">amperage</span>
+                    </div>
+                    <div class="value-big">
+                        <span id="currentValue">0.00</span><span class="unit">A</span>
+                    </div>
+                    <div class="sub-info">
+                        <span id="currentDetail">from source</span>
+                        <span id="powerState">—</span>
+                    </div>
+                </div>
+
+                <!-- POWER -->
+                <div class="power-item power" id="powerItem">
+                    <div class="label-row">
+                        <span><span class="icon">💡</span><span class="name">Power</span></span>
+                        <span style="font-size:0.55rem; color:rgba(255,255,255,0.1);">wattage</span>
+                    </div>
+                    <div class="gauge-wrap">
+                        <div class="value-big">
+                            <span id="powerValue">0.00</span><span class="unit">W</span>
+                        </div>
+                        <div class="gauge-ring" id="powerRing">
+                            <div class="inner" id="powerRingInner">0%</div>
+                        </div>
+                    </div>
+                    <div class="sub-info">
+                        <span id="powerDetail">P = V × A</span>
+                        <span id="powerEfficiency">—</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CHARGING SPEED INDICATOR -->
+            <div class="charging-speed" id="chargingSpeed">
+                <div class="speed-display">
+                    <div class="speed-icon" id="speedIcon">⏸</div>
+                    <div class="speed-label idle" id="speedLabel">Idle</div>
+                    <div class="speed-percent">
+                        <span id="speedPercent">0</span><span class="pct-symbol">%</span>
+                    </div>
+                    <div class="speed-bar-track">
+                        <div class="speed-bar-fill idle-fill" id="speedBarFill" style="width:0%;"></div>
+                    </div>
+                    <div class="speed-sub">
+                        <span id="speedDetail">—</span>
+                        <span id="speedPower">0.00 W</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BATTERY OUTPUT SECTION -->
+        <div class="battery-output-section">
+            <div class="section-title" id="batteryOutputTitle">🔋 Battery Output</div>
+            <div class="battery-output-grid" id="batteryGrid">
+                <!-- components will be injected by JS -->
+            </div>
+            <div class="total-power-row">
+                <span>Total Output Power</span>
+                <span class="total-w" id="totalOutputPower">0.000 W</span>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 14px; font-size: 0.45rem; color: rgba(255,255,255,0.03); letter-spacing: 1px; border-top: 1px solid rgba(255,255,255,0.01); padding-top: 10px;">
+            ⚡ real‑time · auto‑detects Phone / Laptop / Desktop
+        </div>
     </div>
-  <script src="1.js"></script>
+
+    <script>
+        (function() {
+            "use strict";
+
+            // ─── DOM refs ──────────────────────────────────────────────────
+            const voltageValue = document.getElementById('voltageValue');
+            const currentValue = document.getElementById('currentValue');
+            const powerValue = document.getElementById('powerValue');
+            const chargeStatus = document.getElementById('chargeStatus');
+            const batteryLevelDisplay = document.getElementById('batteryLevelDisplay');
+            const powerState = document.getElementById('powerState');
+            const powerRing = document.getElementById('powerRing');
+            const powerRingInner = document.getElementById('powerRingInner');
+            const voltageItem = document.getElementById('voltageItem');
+            const currentItem = document.getElementById('currentItem');
+            const powerItem = document.getElementById('powerItem');
+            const powerDetail = document.getElementById('powerDetail');
+            const batteryGrid = document.getElementById('batteryGrid');
+            const totalOutputPowerEl = document.getElementById('totalOutputPower');
+            const deviceTypeEl = document.getElementById('deviceType');
+            const chargerTitle = document.getElementById('chargerTitle');
+            const batteryOutputTitle = document.getElementById('batteryOutputTitle');
+
+            // Speed indicators
+            const speedIcon = document.getElementById('speedIcon');
+            const speedLabel = document.getElementById('speedLabel');
+            const speedPercent = document.getElementById('speedPercent');
+            const speedBarFill = document.getElementById('speedBarFill');
+            const speedDetail = document.getElementById('speedDetail');
+            const speedPower = document.getElementById('speedPower');
+
+            // ─── device detection ──────────────────────────────────────────
+            function detectDevice() {
+                const ua = navigator.userAgent || navigator.vendor || window.opera;
+
+                // Check for mobile (phone)
+                if (/android|iphone|ipad|ipod|blackberry|windows phone/i.test(ua)) {
+                    return 'phone';
+                }
+
+                // Check for desktop (no battery API or specific OS)
+                // Check if it's a laptop (has battery API and is not mobile)
+                if (navigator.getBattery) {
+                    // Could be laptop or desktop, we'll check battery presence
+                    // For now, we'll detect based on touch support and screen size
+                    const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+                    const isSmallScreen = window.innerWidth < 1024;
+
+                    if (isTouch && isSmallScreen) {
+                        return 'phone';
+                    }
+
+                    // Check if it's Windows/Mac/Linux (desktop/laptop)
+                    if (/windows|macintosh|linux/i.test(ua) && !/android|iphone|ipad|ipod/i.test(ua)) {
+                        // Check if it has battery API - likely laptop
+                        // But we'll use a more reliable method: check if battery is available
+                        return 'laptop';
+                    }
+                }
+
+                // Default: check if it's desktop
+                if (/windows|macintosh|linux/i.test(ua) && !/android|iphone|ipad|ipod/i.test(ua)) {
+                    // Check screen size - if large, likely desktop
+                    if (window.innerWidth >= 1024) {
+                        return 'desktop';
+                    }
+                    return 'laptop';
+                }
+
+                return 'phone'; // fallback
+            }
+
+            let deviceType = detectDevice();
+            let isCharging = false;
+            let batteryLevel = 0;
+            let voltage = 0;
+            let current = 0;
+            let power = 0;
+
+            // ─── battery components (for laptop/phone) ────────────────────
+            const batteryComponents = [
+                { name: 'CPU', icon: '🧠', baseV: 1.2, baseA: 0.5, maxA: 2.5 },
+                { name: 'GPU', icon: '🎮', baseV: 1.0, baseA: 0.3, maxA: 2.0 },
+                { name: 'Display', icon: '🖥️', baseV: 3.3, baseA: 0.3, maxA: 1.2 },
+                { name: 'RAM', icon: '🧮', baseV: 1.2, baseA: 0.2, maxA: 0.8 },
+                { name: 'Storage', icon: '💾', baseV: 3.3, baseA: 0.1, maxA: 0.6 },
+                { name: 'WiFi', icon: '📶', baseV: 3.3, baseA: 0.05, maxA: 0.3 },
+                { name: 'Bluetooth', icon: '📡', baseV: 3.3, baseA: 0.03, maxA: 0.15 },
+                { name: 'Audio', icon: '🎵', baseV: 3.3, baseA: 0.02, maxA: 0.2 },
+                { name: 'USB Ports', icon: '🔌', baseV: 5.0, baseA: 0.05, maxA: 0.3 },
+                { name: 'Fan', icon: '🌀', baseV: 5.0, baseA: 0.05, maxA: 0.25 },
+            ];
+
+            // ─── desktop components (PSU output) ──────────────────────────
+            const desktopComponents = [
+                { name: 'Motherboard', icon: '🧠', baseV: 12, baseA: 0.5, maxA: 3.0 },
+                { name: 'CPU', icon: '⚡', baseV: 12, baseA: 0.8, maxA: 5.0 },
+                { name: 'GPU', icon: '🎮', baseV: 12, baseA: 0.5, maxA: 8.0 },
+                { name: 'RAM', icon: '🧮', baseV: 1.2, baseA: 0.3, maxA: 1.0 },
+                { name: 'Storage (SSD/HDD)', icon: '💾', baseV: 5, baseA: 0.2, maxA: 1.5 },
+                { name: 'USB Ports', icon: '🔌', baseV: 5, baseA: 0.1, maxA: 0.5 },
+                { name: 'Cooling Fans', icon: '🌀', baseV: 12, baseA: 0.1, maxA: 0.5 },
+                { name: 'RGB Lighting', icon: '✨', baseV: 5, baseA: 0.05, maxA: 0.3 },
+            ];
+
+            // ─── helpers ──────────────────────────────────────────────────
+            function clamp(val, min, max) { return Math.min(max, Math.max(min, val)); }
+
+            function randomBetween(min, max) {
+                return min + Math.random() * (max - min);
+            }
+
+            // ─── update device UI ──────────────────────────────────────────
+            function updateDeviceUI() {
+                const deviceNames = {
+                    'phone': '📱 Phone',
+                    'laptop': '💻 Laptop',
+                    'desktop': '🖥️ Desktop'
+                };
+                deviceTypeEl.textContent = deviceNames[deviceType] || 'Unknown';
+
+                if (deviceType === 'desktop') {
+                    chargerTitle.textContent = '🔌 Power Supply Unit (PSU)';
+                    batteryOutputTitle.textContent = '⚡ PSU Output Rails';
+                    document.getElementById('voltageDetail').textContent = 'PSU input';
+                    document.getElementById('currentDetail').textContent = 'from PSU';
+                    // Hide battery level for desktop
+                    document.getElementById('batteryLevelDisplay').textContent = '🖥️ Desktop';
+                } else {
+                    chargerTitle.textContent = '🔌 Charger Input';
+                    batteryOutputTitle.textContent = '🔋 Battery Output';
+                    document.getElementById('voltageDetail').textContent = 'charger input';
+                    document.getElementById('currentDetail').textContent = 'from charger';
+                }
+            }
+
+            // ─── render battery output ────────────────────────────────────
+            function renderBatteryOutput() {
+                const components = deviceType === 'desktop' ? desktopComponents : batteryComponents;
+                batteryGrid.innerHTML = '';
+                let totalW = 0;
+
+                components.forEach((comp, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'battery-item';
+                    div.id = 'comp-' + index;
+
+                    // Calculate real-time values
+                    const loadFactor = 0.2 + (batteryLevel / 100) * 0.8;
+                    const v = comp.baseV + (Math.random() - 0.5) * 0.1;
+                    const a = comp.baseA + (comp.maxA - comp.baseA) * loadFactor * (0.5 + Math.random() * 0.5);
+                    const w = v * a;
+                    totalW += w;
+
+                    const isActive = (deviceType !== 'desktop') ? isCharging : true;
+
+                    div.innerHTML = `
+                        <div class="comp-info">
+                            <span class="comp-icon">${comp.icon}</span>
+                            <span class="comp-name">${comp.name}</span>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
+                            <div class="comp-values">
+                                <span class="v">${v.toFixed(2)}V</span>
+                                <span class="a">${(a * 1000).toFixed(1)}mA</span>
+                                <span class="w">${w.toFixed(3)}W</span>
+                            </div>
+                            <div class="comp-bar">
+                                <div class="fill" style="width:${clamp((w / 10) * 100, 0, 100)}%;"></div>
+                            </div>
+                        </div>
+                    `;
+
+                    if (!isActive && deviceType !== 'desktop') {
+                        div.classList.add('zero-state');
+                    }
+
+                    batteryGrid.appendChild(div);
+                });
+
+                totalOutputPowerEl.textContent = totalW.toFixed(3) + ' W';
+            }
+
+            // ─── update charging speed ────────────────────────────────────
+            function updateChargingSpeed(powerW) {
+                if (deviceType === 'desktop') {
+                    // Desktop - show PSU status
+                    speedIcon.textContent = '⚡';
+                    speedLabel.textContent = 'PSU Active';
+                    speedLabel.className = 'speed-label fast';
+                    const pct = clamp((powerW / 500) * 100, 0, 100);
+                    speedPercent.textContent = Math.round(pct);
+                    speedBarFill.className = 'speed-bar-fill fast-fill';
+                    speedBarFill.style.width = pct + '%';
+                    speedDetail.textContent = 'Power Supply';
+                    speedPower.textContent = powerW.toFixed(2) + ' W';
+                    return;
+                }
+
+                if (!isCharging || powerW === 0) {
+                    speedIcon.textContent = '⏸';
+                    speedLabel.textContent = 'Idle';
+                    speedLabel.className = 'speed-label idle';
+                    speedPercent.textContent = '0';
+                    speedBarFill.className = 'speed-bar-fill idle-fill';
+                    speedBarFill.style.width = '0%';
+                    speedDetail.textContent = 'No charger';
+                    speedPower.textContent = '0.00 W';
+                    return;
+                }
+
+                let speedType = '';
+                let speedName = '';
+                let icon = '';
+                let percent = 0;
+                let colorClass = '';
+
+                if (powerW >= 5.0) {
+                    speedType = 'fast';
+                    speedName = 'Fast Charge';
+                    icon = '⚡';
+                    percent = clamp(((powerW - 3.0) / 7.0) * 100, 30, 100);
+                    colorClass = 'fast';
+                } else if (powerW >= 2.0) {
+                    speedType = 'medium';
+                    speedName = 'Medium Charge';
+                    icon = '🔋';
+                    percent = clamp(((powerW - 1.0) / 4.0) * 100, 15, 85);
+                    colorClass = 'medium';
+                } else if (powerW > 0) {
+                    speedType = 'slow';
+                    speedName = 'Slow Charge';
+                    icon = '🐢';
+                    percent = clamp(((powerW) / 2.0) * 100, 5, 80);
+                    colorClass = 'slow';
+                }
+
+                speedIcon.textContent = icon;
+                speedLabel.textContent = speedName;
+                speedLabel.className = 'speed-label ' + colorClass;
+                speedPercent.textContent = Math.round(percent);
+                speedBarFill.className = 'speed-bar-fill ' + colorClass + '-fill';
+                speedBarFill.style.width = percent + '%';
+                speedDetail.textContent = speedName;
+                speedPower.textContent = powerW.toFixed(2) + ' W';
+            }
+
+            // ─── update charger metrics ──────────────────────────────────
+            function updateCharger() {
+                if (deviceType === 'desktop') {
+                    // Desktop - show PSU power
+                    isCharging = true;
+                    // Simulate PSU power (200W - 600W)
+                    const psuPower = 300 + Math.random() * 200;
+                    voltage = 220 + (Math.random() - 0.5) * 10;
+                    current = psuPower / voltage;
+                    power = psuPower;
+
+                    voltageValue.textContent = voltage.toFixed(1);
+                    currentValue.textContent = current.toFixed(2);
+                    powerValue.textContent = power.toFixed(1);
+
+                    chargeStatus.textContent = '⚡ ACTIVE';
+                    chargeStatus.className = 'charge-status charging';
+                    powerState.textContent = '⚡ PSU ON';
+                    batteryLevelDisplay.textContent = '🖥️ Desktop';
+
+                    voltageItem.classList.remove('zero-state');
+                    currentItem.classList.remove('zero-state');
+                    powerItem.classList.remove('zero-state');
+
+                    const pct = clamp((power / 600) * 100, 0, 100);
+                    powerRing.style.background =
+                        `conic-gradient(from -90deg, #fcd34d 0%, #f59e0b ${pct}%, rgba(255,255,255,0.03) ${pct}%)`;
+                    powerRingInner.textContent = Math.round(pct) + '%';
+                    powerDetail.textContent = '⚡ PSU output';
+
+                    updateChargingSpeed(power);
+                    renderBatteryOutput();
+                    return;
+                }
+
+                if (!navigator.getBattery) {
+                    setZeroState('⚠️ Battery API N/A');
+                    return;
+                }
+
+                navigator.getBattery().then(batt => {
+                    const charging = batt.charging;
+                    const level = batt.level * 100;
+                    batteryLevel = level;
+
+                    batteryLevelDisplay.textContent = '🔋 ' + Math.round(level) + '%';
+
+                    if (charging) {
+                        isCharging = true;
+
+                        let v = 4.2 + (Math.random() - 0.5) * 0.4;
+                        v = clamp(v, 3.8, 5.2);
+                        voltage = v;
+                        voltageValue.textContent = voltage.toFixed(2);
+
+                        const chargeRate = 1.0 - (level / 100);
+                        let i = 0.3 + chargeRate * 2.2;
+                        i = i + (Math.random() - 0.5) * 0.15;
+                        i = clamp(i, 0.1, 3.0);
+                        current = i;
+                        currentValue.textContent = current.toFixed(2);
+
+                        power = voltage * current;
+                        powerValue.textContent = power.toFixed(2);
+
+                        chargeStatus.textContent = '⚡ CHARGING';
+                        chargeStatus.className = 'charge-status charging';
+                        powerState.textContent = '🔌 connected';
+
+                        voltageItem.classList.remove('zero-state');
+                        currentItem.classList.remove('zero-state');
+                        powerItem.classList.remove('zero-state');
+
+                        const pct = clamp((power / 10) * 100, 0, 100);
+                        powerRing.style.background =
+                            `conic-gradient(from -90deg, #fcd34d 0%, #f59e0b ${pct}%, rgba(255,255,255,0.03) ${pct}%)`;
+                        powerRingInner.textContent = Math.round(pct) + '%';
+
+                        if (power > 5.0) powerDetail.textContent = '⚡ fast charge';
+                        else if (power > 2.0) powerDetail.textContent = '🔋 normal charge';
+                        else powerDetail.textContent = '💤 trickle charge';
+
+                        updateChargingSpeed(power);
+                        renderBatteryOutput();
+
+                    } else {
+                        isCharging = false;
+                        voltageValue.textContent = '0.00';
+                        currentValue.textContent = '0.00';
+                        powerValue.textContent = '0.00';
+
+                        chargeStatus.textContent = '🔌 disconnected';
+                        chargeStatus.className = 'charge-status not-charging';
+                        powerState.textContent = '⏸ idle';
+
+                        voltageItem.classList.remove('zero-state');
+                        currentItem.classList.remove('zero-state');
+                        powerItem.classList.remove('zero-state');
+
+                        powerRing.style.background =
+                            `conic-gradient(from -90deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.02) 100%)`;
+                        powerRingInner.textContent = '0%';
+                        powerDetail.textContent = '⏸ no charger';
+
+                        updateChargingSpeed(0);
+                        renderBatteryOutput();
+                    }
+
+                    batt.addEventListener('levelchange', () => updateCharger());
+                    batt.addEventListener('chargingchange', () => updateCharger());
+
+                }).catch(() => {
+                    setZeroState('❌ API error');
+                });
+            }
+
+            // ─── set zero state ────────────────────────────────────────────
+            function setZeroState(statusText) {
+                isCharging = false;
+                voltage = 0;
+                current = 0;
+                power = 0;
+
+                voltageValue.textContent = '0.00';
+                currentValue.textContent = '0.00';
+                powerValue.textContent = '0.00';
+
+                chargeStatus.textContent = statusText;
+                chargeStatus.className = 'charge-status not-charging';
+                powerState.textContent = '⏸ idle';
+
+                voltageItem.classList.add('zero-state');
+                currentItem.classList.add('zero-state');
+                powerItem.classList.add('zero-state');
+
+                powerRing.style.background =
+                    `conic-gradient(from -90deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.02) 100%)`;
+                powerRingInner.textContent = '0%';
+                powerDetail.textContent = '⏸ no charger';
+
+                updateChargingSpeed(0);
+                renderBatteryOutput();
+            }
+
+            // ─── initial setup ─────────────────────────────────────────────
+            function init() {
+                deviceType = detectDevice();
+                updateDeviceUI();
+                updateCharger();
+            }
+
+            // ─── refresh every 1 second ──────────────────────────────────
+            setInterval(() => {
+                // Re-detect device type periodically (in case of orientation change)
+                const newType = detectDevice();
+                if (newType !== deviceType) {
+                    deviceType = newType;
+                    updateDeviceUI();
+                }
+                updateCharger();
+            }, 1000);
+
+            // ─── refresh on visibility change ────────────────────────────
+            document.addEventListener('visibilitychange', () => {
+                if (!document.hidden) {
+                    const newType = detectDevice();
+                    if (newType !== deviceType) {
+                        deviceType = newType;
+                        updateDeviceUI();
+                    }
+                    updateCharger();
+                }
+            });
+
+            // ─── start ──────────────────────────────────────────────────────
+            init();
+
+            console.log('⚡ Device Power Monitor · Auto-detects Phone / Laptop / Desktop');
+            console.log('📱 Detected:', deviceType);
+        })();
+    </script>
+
 </body>
 </html>
-

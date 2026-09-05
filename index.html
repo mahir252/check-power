@@ -547,9 +547,147 @@
             .temp-speed-row { flex-direction: column; }
             .detail-card .card-header .value { font-size: 0.75rem; }
         }
+
+
+
+
+        /* ─── Android Only Popup ───────────────────────────────── */
+
+.android-popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 9999;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.android-popup-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.android-popup {
+    width: 100%;
+    max-width: 360px;
+    background: rgba(18, 23, 38, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 28px;
+    padding: 28px 22px 24px;
+    text-align: center;
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.7),
+        0 0 40px rgba(0, 180, 255, 0.05);
+    position: relative;
+    transform: translateY(0) scale(1);
+    transition: transform 0.25s ease;
+}
+
+.android-popup-overlay.hidden .android-popup {
+    transform: translateY(10px) scale(0.95);
+}
+
+.android-popup-close {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.android-popup-close:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+}
+
+.android-popup-icon {
+    font-size: 2.8rem;
+    margin-bottom: 14px;
+}
+
+.android-popup h2 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 10px;
+}
+
+.android-popup p {
+    font-size: 0.78rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.4);
+    margin: 0;
+                                          }
+
+
+
+
+
+
+
+
+
+
+        
     </style>
 </head>
 <body>
+
+
+
+
+
+
+    <!-- ─── Android Only Popup ───────────────────────────────── -->
+
+<div class="android-popup-overlay" id="androidPopupOverlay">
+
+    <div class="android-popup" id="androidPopup">
+
+        <button class="android-popup-close" id="androidPopupClose" aria-label="Close">
+            ×
+        </button>
+
+        <div class="android-popup-icon">📱</div>
+
+        <h2>This website only works on Android</h2>
+
+        <p>
+            Please open this website on an Android device
+            to use the charger monitoring features.
+        </p>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+    
 
     <div class="dashboard">
         <div class="header">
@@ -713,7 +851,31 @@
     </div>
 
     <script>
-        alert("This website only works on Android");
+        // ─── Android Popup ───────────────────────────────────────
+
+const androidPopupOverlay =
+    document.getElementById('androidPopupOverlay');
+
+const androidPopupClose =
+    document.getElementById('androidPopupClose');
+
+// Popup বন্ধ করার function
+function closeAndroidPopup() {
+    androidPopupOverlay.classList.add('hidden');
+}
+
+// × button click করলে popup বন্ধ হবে
+androidPopupClose.addEventListener('click', closeAndroidPopup);
+
+// Popup-এর বাইরের জায়গায় click করলে বন্ধ হবে
+androidPopupOverlay.addEventListener('click', function(event) {
+
+    // শুধু overlay-তে click হলে বন্ধ হবে
+    if (event.target === androidPopupOverlay) {
+        closeAndroidPopup();
+    }
+
+});
         (function() {
             "use strict";
 
